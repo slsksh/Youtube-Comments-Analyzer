@@ -1,0 +1,71 @@
+{% load socialaccount %}
+
+<html>
+<head>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/templatemo-finance-business.css">
+    <style type="text/css">
+        body {
+            
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Sub Header Style */
+        .sub-header {
+            background-color: #9e39c6;
+            height: 46px;
+            line-height: 46px;
+        }
+
+        .sub-header ul li {
+            display: inline-block;
+        }
+
+        .sub-header ul.left-info li {
+	    border-left: 1px solid rgba(250,250,250,0.3);
+	    padding: 0px 20px;
+	}
+
+	.sub-header ul.left-info li:last-child {
+	    border-right: 1px solid rgba(250,250,250,0.3);
+	}
+
+	.sub-header ul.left-info li i {
+ 	    margin-right: 10px;
+	    font-size: 18px;
+	}
+
+	.sub-header ul.left-info li a {
+	    color: #fff;
+	    font-size: 14px;
+	    font-weight: 600;
+	}	
+
+    </style>
+</head>
+<body>
+<!-- Header -->
+<div class="sub-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xs-12">
+                <ul class="left-info">
+                    <li><a href="../../../../">HOME</a></li>
+		            {% if user.is_authenticated %}
+                        <li><a href="/accounts/logout">Logout</a></li>
+                        {% for account in user.socialaccount_set.all %}
+                            <li><img src={{account.extra_data.picture}} width="45" height="45"></li>
+                            <li><a href="http://ec2-54-180-30-181.ap-northeast-2.compute.amazonaws.com:8000/userinfo/{{account.extra_data.name}}/{{account.extra_data.id}}">안녕하세요, {{account.extra_data.name}}님!</a></li>
+                            <li><a href="http://ec2-54-180-30-181.ap-northeast-2.compute.amazonaws.com:8000/creator/{{account.extra_data.name}}/{{account.extra_data.id}}">Creator Mode</a></li>
+                        {% endfor %}
+                    {% else %}
+                        <li><a href="{% provider_login_url 'google' %}">Google Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

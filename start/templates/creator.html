@@ -1,0 +1,77 @@
+{% load socialaccount %}
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	{% include "login.html" %}
+	{% load staticfiles %}
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/static/css/templatemo-finance-business.css">
+    <style>
+	.btn{
+	    background-color : #9e39c6;
+	    color : white; 
+	}
+	.btn:hover{
+	    background-color : white;
+	    color : #9e39c6;
+	}
+	.tie{
+		text-align: center;
+		color: purple;
+		font-size: 30px;
+    	}
+	</style>
+</head>
+<body>
+	<!--multiple channels
+	<h2 align="center">Select Channels</h2>
+	<form align="center">
+		{% for channel in channels %}
+			<img src={{channel.image}} />
+		{% endfor %}
+	</form>
+	-->
+	{% if user.is_authenticated %}
+		{% for account in user.socialaccount_set.all %}
+			<!-- if user == id -->
+			{% if account.extra_data.name == user_name %}
+			    <div class="album py-5 bg-light">
+				<div class=tie>
+				<a>{{user_name}}님의 비디오 목록</a>
+			    	<br>
+				<hr>
+				</div>:
+			     <div class="container">
+			     <div class="row">
+					{% for video in videos %}
+				       <div class="col-md-4">
+				         <div class="card mb-4 shadow-sm">
+				           <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ video.thumbnail }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"></img>
+				           <div class="card-body">
+				             <p class="card-text">{{ video.title }}</p>
+				             <div class="d-flex justify-content-between align-items-center">
+				               <div class="btn-group">
+				                 <a type="button" href="{{ video.url }}" class="btn btn-sm btn-outline-secondary">View</a>
+				               </div>
+				             </div>
+				           </div>
+				         </div>
+				       </div>
+			    {% endfor %}
+			      </div>
+			    </div>
+			    </div>
+			    
+			{% else %}
+				<a href="../../../"> 돌아가기 </a>
+			{% endif %}
+		{% endfor %}
+    {% else %}
+    	<a href="../../../"> 돌아가기 </a>
+    {% endif %}
+
+</body>
+
+</html>

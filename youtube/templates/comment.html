@@ -1,0 +1,134 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style>
+		@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+		body{
+			font-family: 'Jeju Gothic', sans-serif;
+		}
+		table, th, td {
+		;
+			border: 0px solid #232323;
+	 		text-align: left;
+	 		color: #232323;
+		}
+		table {
+			border-collapse: collapse;
+			width: 600px;
+			padding:30px;
+			margin:50px;
+		}
+		.coco{
+		
+			padding:10px;
+			margin:10px;
+			width:500px;
+		}
+		.line{
+			 border-bottom:1px dashed #dfbbed;
+		}
+		.btn_grp{
+			width: 600px;
+			margin: -8px 50px;
+			padding:0px;
+			background-color:white;
+			position:fixed;
+			text-align:center;
+				
+		}
+		button{
+			background-color: #9e39c6;
+			color : white;
+		   
+		    height: 27px;
+		    border-radius : 3px;
+		    font-size: 15;
+		}
+		button:hover{
+			background-color: white;
+		    color : #9e39c6;
+		}
+		button:focus{
+		    outline: none;
+		}
+		input{
+			width: 350px;
+			height: 27px;
+		}
+		.date{
+			color: gray;
+			font-size: 15px;
+		}
+	</style>
+</head>
+<body>
+	<div class='btn_grp'>
+		<form action="./comment" method="POST">
+			{% csrf_token %}
+			<button type="submit" name="emotion" value="all" id="all">ALL</button>
+			<button type="submit" name="emotion" value="pos" id="pos">긍정적인 댓글 :D</button>
+			<button type="submit" name="emotion" value="0" id="0">중립적인 댓글 :|</button>
+			<button type="submit" name="emotion" value="neg" id="neg">부정적인 댓글 :(</button>
+		</form>
+		<form action="./comment" method='GET'>
+			<input  type="search" name="search" placeholder="댓글을 검색해보세요." class="searchBar">
+                        <button type="submit" value="search" >검색</button>
+		</form>
+		<input type="hidden" id="myVar" name="variable" value="{{ emotion }}">
+		<script>
+		function changeBtn() {
+			var myId = document.getElementById('myVar').value;
+			document.getElementById(myId).style.backgroundColor="rgb(255,255,255)";
+			document.getElementById(myId).style.color="#9e39c6";
+	    	};
+	    	changeBtn();
+	    
+		</script>
+               <hr> 	
+	</div>
+	<br><br><br>
+	<div>
+		<table>
+		{% for comment in comments %}
+			<tr>
+				<td rowspan="2"> <img width=50 height=50 src={{ comment.author_image }} /> </td>
+				<td> {{ comment.author_name }} </td>
+				<td class="date">{{ comment.published_date.date }} </td>
+				<td> ♥ : {{comment.like}} </td>
+			</tr>
+			<tr>
+				<td colspan="4" class="line"> {{comment.text}} </td>
+			</tr>
+			{% if comment.comment_id in hasReply %}
+			<tr>
+				<td colspan="4">
+				<details>
+					<summary>답글보기</summary>
+					<table class="coco">
+						{% for re in reply %}
+							{% if comment.comment_id == re.parent_id %}
+								<tr>
+									<td rowspan="2" > <img width=50 height=50 src={{ re.author_image }} /> 
+									<td> {{ re.author_name }}  </td>
+								</tr>
+								<tr>
+									<td class="line"> {{re.text}} </td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+					</table>
+				</details>
+				</td>
+			</tr>
+			{% endif %}
+		{% empty %}<br>
+			<tr>
+				<td> 검색 결과가 없습니다.</td>
+			</tr>
+		{% endfor %}
+		</table>
+	</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>YouTube Comments Analyzer</title>
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="static/css/templatemo-finance-business.css">
+    <style>
+	.btn{
+	    background-color : #9e39c6;
+	    color : white; 
+	}
+	.btn:hover{
+	    background-color : white;
+	    color : #9e39c6;
+    </style>
+  </head>
+
+  <body>
+    <header class="">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="/"><h2>Youtube Comments Analyzer</h2></a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="main-banner header-text" id="top">
+        <div class="Modern-Slider">
+          <!-- Item -->
+          <div class="item item-1">
+            <div class="img-fill">
+                <div class="text-content">
+                  <h6>댓글을 분석하고 싶은 유투브 영상을 검색해보세요</h6>
+                  <h4>Search Youtube Video</h4>
+                    <form method="POST">
+                    {% csrf_token %}
+                      <input type="text" name="search" class="form-control" aria-label="Username" placeholder="Search">
+                      <br><!--<a href="contact.html" class="filled-button">-->
+                      <button class="btn"  type="submit" name="submit" value="search">검색</button></a>
+                    </form>
+                  </div>
+            </div>
+          </div>
+          <!-- // Item -->
+        </div>
+    </div>
+    <!-- Banner Ends Here -->
+    <div class="request-form">
+    <div class="album py-5 bg-light">
+    <div class="container">
+     <div class="row">
+       {% for video in videos %}
+       <div class="col-md-4">
+         <div class="card mb-4 shadow-sm">
+           <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ video.thumbnail }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"></img>
+           <div class="card-body">
+             <p class="card-text">{{ video.title }}</p>
+             <div class="d-flex justify-content-between align-items-center">
+               <div class="btn-group">
+                 <a type="button" href="{{ video.url }}" class="btn btn-sm btn-outline-secondary">View</a>
+               </div>
+               <small class="text-muted">{{ video.duration }} mins</small>
+             </div>
+           </div>
+         </div>
+       </div>
+       {% endfor %}
+     </div>
+   </div>
+ </div>
+    </div>
+    <footer>
+    </footer>
+    <div class="sub-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <p>Copyright &copy; 2020 Commentopia</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

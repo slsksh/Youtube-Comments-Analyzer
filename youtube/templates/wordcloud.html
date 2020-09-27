@@ -1,0 +1,60 @@
+<html>
+<head>
+	<style>
+		@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+		body{
+			font-family: 'Jeju Gothic', sans-serif;
+			text-align:center;
+			 margin :0px;
+                        padding:0px ;
+		}
+		button{
+		    background-color: #9e39c6;
+		    color : white;
+		    width: 150px;
+		    height: 50px;
+		    border-radius : 3px;
+		    font-size : 25px;
+		}
+		button:hover{
+	            background-color: white;
+		    color : #9e39c6;
+		}
+		button:focus{
+		    outline: none;
+		}
+		.cloud{
+			margin :0;
+			padding:0;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<form action="./wordcloud" method="POST">
+			{% csrf_token %}<br>
+			<button type="submit" name="senti" value="NEU" id="NEU">중립</button>
+			<button type="submit" name="senti" value="JOY" id="JOY">행복</button>
+			<button type="submit" name="senti" value="SAD" id="SAD">슬픔</button>
+			<br>
+			<button type="submit" name="senti" value="SUR" id="SUR">놀람</button>
+			<button type="submit" name="senti" value="FEA" id="FEA">두려움</button>
+			<button type="submit" name="senti" value="ANG" id="ANG">화남</button>
+		</form>
+		<input type="hidden" id="myVar2" name="variable" value="{{senti}}">
+                <script>
+                function changeBtn2() {
+                        var myId2 = document.getElementById('myVar2').value;
+                        document.getElementById(myId2).style.backgroundColor="rgb(255,255,255)";
+                        document.getElementById(myId2).style.color="#9e39c6";
+                }
+                changeBtn2(); 
+                </script>
+	</div>
+	<div class="cloud">
+	{% for elem in wordcloud %}
+	   {{elem|safe}}
+	{% endfor %}
+	</div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <style>
+    @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+      body{
+        font-family: 'Jeju Gothic', sans-serif;
+      }
+      table, th, td {
+        border: 0px solid #b783cc;
+        text-align: left;
+       
+        color: #232323;
+      }
+      table {
+        border: 0px solid #b783cc;
+        border-collapse: collapse;
+        width: 600px;
+	margin: 95px 50px;
+      	padding:30px;
+	word-break: break-all;
+	}
+      button{
+        background-color: #9e39c6;
+        color : white;
+        height: 30px;
+        border-radius : 3px;
+        font-size: 15;
+      }
+      button:hover{
+        background-color: white;
+        color : #9e39c6;
+      }
+      button:focus{
+        outline: none;
+      }
+      .btn_grp{
+	margin: -20px 50px;
+	padding: 0px 0px;
+	width: 600px;
+	background-color:white;
+	text-align:center;
+	position: fixed;
+	}
+      #change{
+        background-color: #9e39c6;
+        color : white;
+        width: 100px;
+        height: 35px;
+        font-size: 15;
+	outline:0;
+        border:0;
+	}
+      #change:focus{
+	outline:none;
+	}
+      a{
+	    color: purple;
+	}
+	.searchBar{
+		width:350px;
+		height:27px;
+	}
+	.line{
+                border-bottom:1px dashed #dfbbed;
+        }
+	.date{
+		font-size:15px;
+		color : gray;
+	}
+	
+  </style>
+
+</head>
+<body>
+<div class='btn_grp'>
+    <form action="comment" method="POST">
+      {% csrf_token %}
+      <button name="emotion" value="all" id="all">ALL</button>
+      <button name="emotion" value="pos" id="pos">긍정적인 댓글 :D</button>
+      <button name="emotion" value="0" id="0">중립적인 댓글 :|</button>
+      <button name="emotion" value="neg" id="neg">부정적인 댓글 :(</button>
+    </form>
+    <form action="./comment" method='GET'>
+			<input  type="search" name="search" placeholder="댓글을 검색해보세요." class="searchBar">
+                        <button type="submit" value="search" >검색</button>
+		</form>
+    <input type="hidden" id="myVar" name="variable" value="{{ emotion }}">
+	<script>
+	function changeBtn() {
+		var myId = document.getElementById('myVar').value;
+		document.getElementById(myId).style.backgroundColor="rgb(255,255,255)";
+		document.getElementById(myId).style.color="#9e39c6";
+		console.log(myId);
+	};
+	changeBtn();
+	    
+	</script><hr>
+</div>
+    <div>
+    <table>
+    {% for comment in comments %}
+      <tr>
+        <td rowspan="2"> <img width=50 height=50 src={{ comment.author_image }} /> </td>
+        <td> {{ comment.author_name }}</td>
+        <td class="date"> {{ comment.published_date.date }} </td>
+        <td> ♥ : {{comment.like}} </td>
+        <td rowspan="2">
+          <!-- Modal windows button open -->
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{comment.comment_id}}" data-title="Test Title" id="change">변경하기</button>
+        </td>
+        <!-- Modal window -->
+        <div class="modal fade" id="myModal{{comment.comment_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content" width="400">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="myModalLabel">[크리에이터 모드] 댓글 분류 변경하기</h4>
+                  <h6> 아래 버튼 선택 시 해당 분류로 변경됨 </h6>
+                </div>
+              <div class="modal-body">
+		<form method='GET' action="/creator/{{user}}/{{v_id}}/change/{{comment.comment_id}}">
+               		<!--3sentiment-->
+			<h5> 아래 <b>세가지 감성</b> 중 어디에 댓글이 해당하나요? </h5>
+                        <input type="radio" name="3sent" value=0> <label>긍정적인 댓글 :)&nbsp</label>
+                        <input type="radio" name="3sent" value=1> <label> 중립적인 댓글 :|&nbsp</label>
+                        <input type="radio" name="3sent" value=2> <label>부정적인 댓글 :(&nbsp</label><br><br>
+			<!--6sentiment-->
+			<h5> 아래 <b>여섯가지 감성</b> 중 어디에 댓글이 해당하나요?</h5>
+			<input type="radio" name="6sent" value=0> <label>중립&nbsp</label>
+               		<input type="radio" name="6sent" value=1> <label>행복&nbsp</label>
+               		<input type="radio" name="6sent" value=2> <label>슬픔&nbsp</label>
+               		<input type="radio" name="6sent" value=3> <label>놀람&nbsp</label>
+               		<input type="radio" name="6sent" value=4> <label>두려움&nbsp</label>
+                	<input type="radio" name="6sent" value=5> <label>화남&nbsp</label>
+   		          
+		<div class="modal-footer pt-0 mt-0 pb-5 pr-6 m-1 ">   
+                <div class="col-2 justify-content-end ">
+               <!-- <button id="change"  type="button" class="btn btn-outline-light modal_footer" data-dismiss="modal">Cancel</button> </div>-->
+                <div class="col-2 justify-content-start m-0 p-0">
+		<button id="change"  type="submit" class="btn btn-success box-shadow—16dp">OK</button>
+                </div></div></div>
+		</form>
+                </div>
+		</div>
+            </div>
+        </div>
+      </tr>
+      <tr>
+        <td colspan="3" class="line"> {{comment.text}} </td>
+      </tr>
+    {% endfor %}
+    <hr>
+    </table>
+  </div>
+</body>
+</html>

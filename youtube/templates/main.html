@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+    <head>
+		<meta charset="UTF-8">
+		{% include "login.html" %}
+		<link rel="stylesheet" href="static/css/templatemo-finance-business.css">
+		<style>
+			@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+			body{
+				font-family: 'Jeju Gothic', sans-serif;
+				text-align: left;
+			}
+			.searchBar{
+				width: 550px;
+				height: 30px;
+				border-radius : 3px;
+				border: 1px inset #9e39c6;
+			}
+			.searchBar:focus{
+				outline: none;
+			}
+			.searchBtn{
+				background-color: #9e39c6;
+				color : white;
+				width: 60px;
+				height: 32px;
+				border-radius : 3px;
+			}
+			.searchBtn:focus{
+				outline: none;
+			}
+			.searchBtn:hover{
+				background-color: white;
+				color : #9e39c6;
+			}
+			.video{
+	 			margin: 10px 20px;
+			
+			}
+			.line{
+				border-bottom: 1px dashed #debbed;
+			}
+			.timeStamp{
+				text-align:left;			 
+				margin:-300px 0px;
+				padding:0;		
+			}
+			table, th, td {
+        		border: 0px solid #232323;
+           		
+           		margin: 20px 10px;
+           		color: #232323;
+	      		}
+	     		table {
+     			border-collapse: collapse;
+        		
+	      		}
+			table.whole{
+			width: 1420px;
+			height: 700px;
+			table-layout: fixed;
+			text-align:center;							 
+			}
+			iframe{
+				margin:0;
+				padding:0;
+			}
+			.wrap{
+				max-width:100%;
+				height:auto;
+				margin :0;
+				padding: 0;
+				overflow: hidden;
+			}
+			.wc{
+				 width: 700px;
+   				 height: 750px;
+   				overflow : hidden;
+				 border: 0;
+				-ms-transform: scale(0.6);
+				-moz-transform: scale(0.6);
+    				-o-transform: scale(0.6);
+    				-webkit-transform: scale(0.6);
+    				transform: scale(0.6);
+    
+    				-ms-transform-origin: 0 0;
+    				-moz-transform-origin: 0 0;
+    				-o-transform-origin: 0 0;
+    				-webkit-transform-origin: 0 0;
+    				transform-origin: 0 0;
+			}
+			.wrap2{
+				max-width:100%;
+                                height:auto;
+                                padding: 0;
+				margin:0;
+                                overflow: hidden;
+			
+			}
+			.graph{
+				width: 600px;
+				height: 650px;
+                                overflow : hidden;
+                                 border: 0;
+                                -ms-transform: scale(0.7);
+                                -moz-transform: scale(0.7);
+                                -o-transform: scale(0.7);
+                                -webkit-transform: scale(0.7);
+                                transform: scale(0.7);
+
+                                -ms-transform-origin: 0 0;
+                                -moz-transform-origin: 0 0;
+                                -o-transform-origin: 0 0;
+                                -webkit-transform-origin: 0 0;
+                                transform-origin: 0 0;
+	
+			}
+			.reco{
+				padding:0px 20px;
+				margin:-20px 0px;
+			}
+		
+		</style>
+    </head>
+    <body>
+    <table class="whole">
+    <tr>	
+	<th colspan="10"> <form method="POST" action="../../../../">
+		{% csrf_token %}
+	<p class="whole">
+		<input type="text" name="search" placeholder="댓글 분석을 원하는 영상을 검색해보세요." class="searchBar">
+		<button type="submit" class="searchBtn" value="Search">검색</button>
+	</p>
+	</form>
+	</th>
+    </tr>
+    <tr>
+
+	<td colspan="5">
+	<div class="video">
+		{% if time == 0 %}
+			<iframe width="700" height="500"  src={{url}} frameborder="0"
+				allow="accelerometer; autoplay; encrypted-media; groscope; picture-in-picture" allowfullscreen></iframe>
+		{% else %}
+			<iframe width="700" height="500" src={{url_time}} frameborder="0"
+				allow="accelerometer; autoplay; encrypted-media; groscope; picture-in-picture" allowfullscreen></iframe>
+		{% endif %}
+	</div>
+	</td>
+	<td colspan="5">
+		<iframe width="700" height="500" src="{{comment_url}}" frameborder="0"></iframe> </td>
+    </tr>
+    <tr>
+	<td colspan="3"><div class="wrap"> <iframe class="wc" src="{{wc_url}}" frameborder="0"></iframe></div> </td>
+	<td colspan="3"><div class="wrap2"> <iframe class="graph" src={{graph_url}} frameborder="0"></iframe></div> </td>
+	<td colspan="4">
+	
+		<div class="timeStamp">
+		<h6> Timestamp Top5</h6>
+		<h7> '좋아요'를 많이 받은 타임스탬프 댓글</h7>
+		<table>
+		{% for comment in comments %}
+			<tr>
+				<td rowspan="2"> <img width=50 height=50 src={{ comment.author_image }} /> </td>
+				<td>{{ comment.author_name }} </td>
+				<td><b> ♥ : {{comment.like}}</b> </td>
+			</tr>
+			<tr>
+				<td colspan="2" class="line"> {% for elem in comment.text %}
+								   {{elem|safe}}
+								{% endfor %}
+				</td>
+			</tr>
+		{% endfor %}
+		</table>
+		</div>
+	</td>
+    </tr>
+    <tr>
+	<td colspan="10"  class="reco">
+	<h5>추천 동영상</h5>
+	{% for video in videos %}
+	<a href="{{video.url}}"><img width="300px"height="200" src={{video.thumbnail}}></a>
+	{% endfor %}</td>
+    </tr>
+
+    </table>
+
+   </body>
+    <div class="sub-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <p>Copyright &copy; 2020 Commentopia</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</html>

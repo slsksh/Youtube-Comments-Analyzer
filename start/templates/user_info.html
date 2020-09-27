@@ -1,0 +1,39 @@
+
+{% load socialaccount %}
+<html>
+<head>
+	{% include "login.html" %}
+	<style>
+		#channel{
+			display:inline-block;
+		}
+		tr{
+			width:100px;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<tr>
+			<td>User Name</td>
+			<td>{{user_name}}</td>
+		</tr>
+		<tr>
+			<td>User ID</td>
+			<td>{{user_id}}</td>
+		</tr>
+		<form method="POST">
+		{% csrf_token %}
+		<tr>
+			<td>Channel ID</td>
+			<td>
+				<div id="channel">
+					<input type="text" name="ChannelId" class="form-control" value="{{channel}}" style="width:300px">
+					<button class="btn"  type="submit" name="submit" onclick="alert('저장되었습니다.')">저장</button>
+				</div>
+			</td>
+		</tr>
+		</form>
+</body>
+
+</html>

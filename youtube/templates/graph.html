@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<style>
+		@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+		body{
+			font-family: 'Jeju Gothic', sans-serif;
+			text-align:center;
+			padding:0;
+			margin:0;
+			border-style:none;
+		}
+		button{
+                    background-color: #9e39c6;
+                    color : white;
+                    width: 150px;
+                    height: 50px;
+                    border-radius : 3px;
+                    font-size : 25px;
+		 }
+                button:hover{
+                    background-color: white;
+                    color : #9e39c6;
+                }
+                button:focus{
+                    outline: none;
+               }
+		.btn_grp{
+		/*position:fixed;*/	
+		}
+		#fig_graph{
+		  border-color:"#FFFFFF";
+		}
+		</style>
+		
+
+
+	</head>
+	<body>
+		<div class='btn_grp'>
+			<form action="./graph" method="POST">
+				{% csrf_token %}
+				<button type="submit" name="percent" value="all" id="all">전체 감성</button>
+				<button type="submit" name="percent" value="false" id="false">시간별 보기</button>
+				<button type="submit" name="percent" value="true" id="true">비율별 보기</button>
+			</form>
+		</div>
+		<input type="hidden" id="myVar" name="variable" value="{{ percent }}">
+		<script>
+		function changeBtn() {
+			var myId = document.getElementById('myVar').value;
+			document.getElementById(myId).style.backgroundColor="rgb(255,255,255)";
+			document.getElementById(myId).style.color="#9e39c6";
+	    	};
+	    	changeBtn();
+	    
+		</script>
+		{% for elem in graph %}
+		   {{elem|safe}}
+		{% endfor %}
+	</body>
+</html>
